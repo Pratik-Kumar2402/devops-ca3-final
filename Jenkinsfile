@@ -4,15 +4,12 @@ pipeline {
    environment {
        DOCKER_HUB_REPO = "pratik2402/devops-ca3"
        CONTAINER_NAME = "devops-ca3"
- 
+       DOCKERHUB_CREDENTIALS=credentials('dockerhub-credentials')
    }
   
    stages {
-       stage('Checkout') {
-           steps {
-               checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Pratik-Kumar2402/devops-ca3-final.git']]])
-           }
-       }
+       /* We do not need a stage for checkout here since it is done by default when using "Pipeline script from SCM" option. */
+      
        stage('Build') {
            steps {
                echo 'Building..'
@@ -24,15 +21,21 @@ pipeline {
                echo 'Testing..'
                sh 'docker stop $CONTAINER_NAME || true'
                sh 'docker rm $CONTAINER_NAME || true'
-               sh 'docker run --name $CONTAINER_NAME $DOCKER_HUB_REPO /bin/bash  -c "pytest test.py"'
+               sh 'docker run --name $CONTAINER_NAME $DOCKER_HUB_REPO /bin/bash -c "pytest test.py"'
+           }
+       }
+       stage('Push') {
+           steps {
+               echo 'Pushing image..'
+               sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+               sh 'docker push $DOCKER_HUB_REPO:latest'
            }
        }
        stage('Deploy') {
            steps {
                echo 'Deploying....'
-               sh 'docker stop $CONTAINER_NAME || true'
-               sh 'docker rm $CONTAINER_NAME || true'
-               sh 'docker run -d -p 5000:5000 --name $CONTAINER_NAME $DOCKER_HUB_REPO'
+               sh 'minikube kubectl -- apply -f deployment.yaml'
+               sh 'minikube kubectl -- apply -f service.yaml'
            }
        }
    }
