@@ -36,10 +36,10 @@ pipeline {
                echo 'Deploying....'
 		   script{
 			   sh('dir')
-			   sh('sudo apt-get install docker.io')
+			   sh('apt-get install docker.io')
 			   sh('curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64')
-			   sh('sudo install minikube-linux-amd64 /usr/local/bin/minikube')
-			   sh('sudo usermod -aG docker $USER && newgrp docker')
+			   sh('install minikube-linux-amd64 /usr/local/bin/minikube')
+			   sh('usermod -aG docker $USER && newgrp docker')
 			   sh('minikube start')
 			   
 			// kubernetesDeploy (configs: 'deployment.yaml', kubeconfigId: 'kubernetes-config')
