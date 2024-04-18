@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: devops-ca3-deployment # name of the deployment
+
+spec:
+ template: # pod defintion
+   metadata:
+     name: devops # name of the pod
+     labels:
+       app: devops
+       tier: frontend
+   spec:
+     containers:
+       - name: devops-ca3
+         image: pratik2402/devops-ca3:latest
+ replicas: 3
+ selector: # Mandatory, Select the pods which needs to be in the replicaset
+   matchLabels:
+     app: devops
+     tier: frontend
