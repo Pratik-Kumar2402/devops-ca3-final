@@ -35,9 +35,13 @@ pipeline {
            steps {
                echo 'Deploying....'
 		   script{
-			   sh('ls')
 			   sh('dir')
+			   sh('sudo apt-get install docker.io')
+			   sh('curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64')
+			   sh('sudo install minikube-linux-amd64 /usr/local/bin/minikube')
+			   sh('sudo usermod -aG docker $USER && newgrp docker')
 			   sh('minikube start')
+			   
 			// kubernetesDeploy (configs: 'deployment.yaml', kubeconfigId: 'kubernetes-config')
 			// kubernetesDeploy (configs: 'service.yaml', kubeconfigId: 'kubernetes-config')
 			// sh 'minikube kubectl -- apply -f deployment.yaml'
