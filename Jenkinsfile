@@ -35,7 +35,8 @@ pipeline {
            steps {
                echo 'Deploying....'
 		   script{
-			kubernetesDeploy (configs: 'deployment.yaml', kubeconfigId: 'kubernetes-config')
+			   sh('ls')
+			// kubernetesDeploy (configs: 'deployment.yaml', kubeconfigId: 'kubernetes-config')
 			// kubernetesDeploy (configs: 'service.yaml', kubeconfigId: 'kubernetes-config')
 			// sh 'alias kubectl="minikube kubectl --"'
 			// sh 'kubectl apply -f deployment.yaml'
