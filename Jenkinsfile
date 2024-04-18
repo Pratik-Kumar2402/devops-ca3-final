@@ -36,9 +36,9 @@ pipeline {
                echo 'Deploying....'
 		   script{
 			   sh('dir')
-			   kubernetesDeploy (configs: 'deployment.yaml', kubeconfigId: 'kubernetes-config')
-			   kubernetesDeploy (configs: 'service.yaml', kubeconfigId: 'kubernetes-config')
-			// sh 'minikube kubectl -- apply -f deployment.yaml'
+			   // kubernetesDeploy (configs: 'deployment.yaml', kubeconfigId: 'kubernetes-config')
+			   // kubernetesDeploy (configs: 'service.yaml', kubeconfigId: 'kubernetes-config')
+			   sh 'minikube kubectl -- apply -f deployment.yaml'
 			   
 		   }
 	       
