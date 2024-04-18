@@ -39,6 +39,7 @@ pipeline {
 			   // kubernetesDeploy (configs: 'deployment.yaml', kubeconfigId: 'kubernetes-config')
 			   // kubernetesDeploy (configs: 'service.yaml', kubeconfigId: 'kubernetes-config')
 			   sh 'minikube kubectl -- apply -f deployment.yaml'
+			   sh 'minikube kubectl -- apply -f service.yaml'
 			   
 		   }
 	       
