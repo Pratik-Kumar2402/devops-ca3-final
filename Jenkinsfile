@@ -35,11 +35,11 @@ pipeline {
            steps {
                echo 'Deploying....'
 		   script{
-			   sh('dir')
-			   // kubernetesDeploy (configs: 'deployment.yaml', kubeconfigId: 'kubernetes-config')
-			   // kubernetesDeploy (configs: 'service.yaml', kubeconfigId: 'kubernetes-config')
-			   // sh 'minikube kubectl -- apply -f deployment.yaml'
-			   // sh 'minikube kubectl -- apply -f service.yaml'
+			   sh 'docker stop $CONTAINER_NAME || true'
+		           sh 'docker rm $CONTAINER_NAME || true'
+		           sh 'docker run -d -p 5000:5000 --name $CONTAINER_NAME $DOCKER_HUB_REPO'
+			   sh 'minikube kubectl -- apply -f deployment.yaml'
+			   sh 'minikube kubectl -- apply -f service.yaml'
 			   
 		   }
 	       
